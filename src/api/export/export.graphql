@@ -1,0 +1,37 @@
+type Export {
+  id: ID!
+  amount: Int!
+  productId: String!
+  exportDate: String!
+  exportFromWarehouseId: String!
+  exportToWarehouseId: String!
+  createdAt: String!
+}
+
+type Query {
+  getExports: [Export!]!
+  getExport(id: ID!): Export!
+}
+
+# Example "exportDate": "2023-02-25",
+input CreateExportInput {
+  amount: Int!
+  productId: String!
+  exportDate: String!
+  exportFromWarehouseId: String!
+  exportToWarehouseId: String!
+}
+
+input UpdateExportInput {
+  amount: Int
+  productId: String
+  exportDate: String
+  exportFromWarehouseId: String
+  exportToWarehouseId: String
+}
+
+type Mutation {
+  createExport(CreateExportInput: CreateExportInput!): Export!
+  updateExport(id: ID!, UpdateExportInput: UpdateExportInput!): Export!
+  deleteExport(id: ID!): Boolean!
+}

@@ -1,0 +1,33 @@
+type Product {
+  id: ID!
+  name: String!
+  productSize: Int!
+  isHazardous: Boolean!
+  warehouseId: String!
+  createdAt: String!
+}
+
+type Query {
+  findAllProducts: [Product]!
+  findProductById(id: String!): Product
+}
+
+input CreateProductInput {
+  name: String!
+  productSize: Int!
+  isHazardous: Boolean!
+  warehouseId: String!
+}
+
+input UpdateProductInput {
+  id: String!
+  name: String
+  productSize: Int
+  warehouseId: String
+}
+
+type Mutation {
+  createProduct(CreateProductInput: CreateProductInput!): Product!
+  updateProduct(UpdateProductInput: UpdateProductInput!): Product
+  deleteProduct(id: String!): String
+}
