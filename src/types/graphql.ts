@@ -7,6 +7,7 @@
 
 /* tslint:disable */
 /* eslint-disable */
+
 export class CreateExportInput {
     amount: number;
     productId: string;

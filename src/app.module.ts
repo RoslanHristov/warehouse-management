@@ -10,7 +10,6 @@ import { DatabaseModule } from './libs/database.module';
 import { WarehouseModule } from './api/warehouse/warehouse.module';
 import { ProductModule } from './api/product/product.module';
 import { ImportModule } from './api/import/import.module';
-
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -24,8 +23,6 @@ import { ImportModule } from './api/import/import.module';
       },
     }),
 
-    // TypeOrmModule.forRoot(),
-    // TypeOrmModule.forFeature([]),
     WarehouseModule,
     ProductModule,
     ImportModule,
