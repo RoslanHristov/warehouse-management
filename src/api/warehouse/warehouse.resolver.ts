@@ -39,4 +39,9 @@ export class WarehouseResolver {
   public async getWarehouseStockCurrentCapacity(@Args('id') id: string) {
     return await this.warehouseService.getWarehouseStockCurrentCapacity(id);
   }
+
+  @Query()
+  public async getAllWarehousesCurrentCapacity() {
+    return await this.warehouseService.getAllWarehousesCurrentCapacity();
+  }
 }

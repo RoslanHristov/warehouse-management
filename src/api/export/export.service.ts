@@ -26,8 +26,7 @@ export class ExportService {
   ) {}
 
   public async createExport(createExportInput: CreateExportInput) {
-    const { productId, exportFromWarehouseId, exportToWarehouseId } =
-      createExportInput;
+    const { productId, exportToWarehouseId } = createExportInput;
 
     // Check if product exists
     const product: ProductEntity = await this.productService.findProductById(
@@ -36,14 +35,14 @@ export class ExportService {
 
     // Check if exportFromWarehouse exists
     const exportFromWarehouse: WarehouseEntity =
-      await this.warehouseService.findWarehouseById(exportFromWarehouseId);
+      await this.warehouseService.findWarehouseById(product.warehouseId);
 
     // Check if exportToWarehouse exists
     const exportToWarehouse: WarehouseEntity =
       await this.warehouseService.findWarehouseById(exportToWarehouseId);
 
     // Check if exportFromWarehouse and exportToWarehouse are different
-    if (exportFromWarehouseId === exportToWarehouseId) {
+    if (product.warehouseId === exportToWarehouseId) {
       throw new ConflictException(
         `Export from same warehouse "${exportFromWarehouse.name}" to warehouse "${exportToWarehouse.name}" is not allowed`,
       );
@@ -65,7 +64,7 @@ export class ExportService {
   }
 
   public async findExportById(id: string) {
-    const exportFound = await this.exportRepository.findOneBy({ id });
+    const exportFound = await this.getExport(id);
     if (!exportFound) {
       throw new NotFoundException(`Export with id - "${id}" not found`);
     }
@@ -73,7 +72,7 @@ export class ExportService {
   }
 
   public async updateExport(id: string, updateExportInput: CreateExportInput) {
-    const exportToUpdate = await this.exportRepository.findOneBy({ id });
+    const exportToUpdate = await this.getExport(id);
 
     if (!exportToUpdate) {
       throw new NotFoundException(`Export with id - "${id}" not found`);
@@ -88,7 +87,7 @@ export class ExportService {
   }
 
   public async deleteExport(id: string) {
-    const exportToDelete = await this.exportRepository.findOneBy({ id });
+    const exportToDelete = await this.getExport(id);
 
     if (!exportToDelete) {
       throw new NotFoundException(`Export with id - "${id}" not found`);
@@ -96,5 +95,21 @@ export class ExportService {
 
     await this.exportRepository.delete(id);
     return exportToDelete;
+  }
+
+  public async getExports() {
+    const allExports = await this.exportRepository.find();
+    if (allExports.length === 0) {
+      throw new NotFoundException('No exports found');
+    }
+    return allExports;
+  }
+
+  public async getExport(id: string) {
+    const exportFound = await this.exportRepository.findOneBy({ id });
+    if (!exportFound) {
+      throw new NotFoundException(`Export with id - "${id}" not found`);
+    }
+    return exportFound;
   }
 }

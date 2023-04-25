@@ -74,6 +74,8 @@ export abstract class IQuery {
     abstract findWarehouseById(id: string): Nullable<Warehouse> | Promise<Nullable<Warehouse>>;
 
     abstract getWarehouseStockCurrentCapacity(id: string): Nullable<number> | Promise<Nullable<number>>;
+
+    abstract getAllWarehousesCurrentCapacity(): Nullable<number> | Promise<Nullable<number>>;
 }
 
 export abstract class IMutation {

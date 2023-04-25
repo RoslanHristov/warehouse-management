@@ -4,6 +4,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ProductEntity } from 'src/libs/entities/product.entity';
 import { WarehouseEntity } from 'src/libs/entities/warehouse.entity';
 import { CreateWarehouseInput, UpdateWarehouseInput } from 'src/types/graphql';
 import { Repository } from 'typeorm';
@@ -13,6 +14,8 @@ export class WarehouseService {
   constructor(
     @InjectRepository(WarehouseEntity)
     private readonly warehouseRepository: Repository<WarehouseEntity>,
+    @InjectRepository(ProductEntity)
+    private readonly productRepository: Repository<ProductEntity>,
   ) {}
 
   async createWarehouse(createWarehouseInput: CreateWarehouseInput) {
@@ -87,42 +90,39 @@ export class WarehouseService {
     return warehouse.stockCurrentCapacity;
   }
 
-  // Return the current stock amount per warehouse and in general and free stock space remaining.
-  // async getWarehouseStockInfo() {
-  //   const allWarehouses = await this.warehouseRepository.find();
-  //   if (allWarehouses.length === 0) {
-  //     throw new BadRequestException('No warehouses found');
-  //   }
+  async getAllWarehousesCurrentCapacity(): Promise<number> {
+    const allWarehouses = await this.warehouseRepository.find();
 
-  //   const warehouseStockInfo = allWarehouses.map((warehouse) => {
-  //     const { id, name, stockCurrentCapacity, stockMaxCapacity } = warehouse;
-  //     return {
-  //       id,
-  //       name,
-  //       stockCurrentCapacity,
-  //       stockMaxCapacity,
-  //       stockFreeCapacity: stockMaxCapacity - stockCurrentCapacity,
-  //     };
-  //   });
+    if (allWarehouses.length === 0) {
+      throw new BadRequestException('No warehouses found');
+    }
 
-  //   const totalStockCurrentCapacity = allWarehouses.reduce(
-  //     (acc, warehouse) => acc + warehouse.stockCurrentCapacity,
-  //     0,
-  //   );
+    let totalStockCurrentCapacity = 0;
+    allWarehouses.forEach((warehouse) => {
+      totalStockCurrentCapacity += warehouse.stockCurrentCapacity;
+    });
 
-  //   const totalStockMaxCapacity = allWarehouses.reduce(
-  //     (acc, warehouse) => acc + warehouse.stockMaxCapacity,
-  //     0,
-  //   );
+    return totalStockCurrentCapacity;
+  }
 
-  //   const totalStockFreeCapacity =
-  //     totalStockMaxCapacity - totalStockCurrentCapacity;
+  async freeUpWarehouseSpace(warehouseId) {
+    const warehouse: WarehouseEntity = await this.findWarehouseById(
+      warehouseId,
+    );
 
-  //   return {
-  //     warehouseStockInfo,
-  //     totalStockCurrentCapacity,
-  //     totalStockMaxCapacity,
-  //     totalStockFreeCapacity,
-  //   };
-  // }
+    // Find all products in the warehouse and set their warehouseId to null
+    const products = await this.productRepository.find({
+      where: {
+        warehouseId: warehouse.id,
+      },
+    });
+
+    for (const product of products) {
+      product.warehouseId = null;
+      await this.productRepository.save(product);
+    }
+
+    warehouse.stockCurrentCapacity = 0;
+    await this.warehouseRepository.save(warehouse);
+  }
 }

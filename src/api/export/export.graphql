@@ -3,7 +3,6 @@ type Export {
   amount: Int!
   productId: String!
   exportDate: String!
-  exportFromWarehouseId: String!
   exportToWarehouseId: String!
   createdAt: String!
 }
@@ -13,12 +12,11 @@ type Query {
   getExport(id: ID!): Export!
 }
 
-# Example "exportDate": "2023-02-25",
+# Example "exportDate": "2023-02-25", this could be a custom scalar type
 input CreateExportInput {
   amount: Int!
   productId: String!
   exportDate: String!
-  exportFromWarehouseId: String!
   exportToWarehouseId: String!
 }
 
@@ -26,7 +24,6 @@ input UpdateExportInput {
   amount: Int
   productId: String
   exportDate: String
-  exportFromWarehouseId: String
   exportToWarehouseId: String
 }
 

@@ -26,4 +26,14 @@ export class ExportResolver {
   public async deleteExport(@Args('id') id: string) {
     return this.exportService.deleteExport(id);
   }
+
+  @Query()
+  public async getExports() {
+    return this.exportService.getExports();
+  }
+
+  @Query()
+  public async getExport(@Args('id') id: string) {
+    return this.exportService.getExport(id);
+  }
 }

@@ -27,6 +27,7 @@ type Query {
   findAllWarehouses: [Warehouse]!
   findWarehouseById(id: String!): Warehouse
   getWarehouseStockCurrentCapacity(id: String!): Int
+  getAllWarehousesCurrentCapacity: Int
 }
 
 type Mutation {

@@ -17,9 +17,6 @@ export class ExportEntity {
   amount: number;
 
   @Column()
-  exportFromWarehouseId: string;
-
-  @Column()
   exportToWarehouseId: string;
 
   @Column()
