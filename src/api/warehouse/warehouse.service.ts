@@ -54,8 +54,10 @@ export class WarehouseService {
     return warehouse;
   }
 
-  async updateWarehouse(updateWarehouseInput: UpdateWarehouseInput) {
-    const id: string = updateWarehouseInput.id;
+  async updateWarehouse(
+    id: string,
+    updateWarehouseInput: UpdateWarehouseInput,
+  ) {
     const warehouse = await this.findWarehouseById(id);
 
     Object.assign(warehouse, updateWarehouseInput); // Update the entity properties

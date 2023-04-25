@@ -20,7 +20,7 @@ export class ImportEntity {
   // warehouse: WarehouseEntity;
 
   @Column()
-  warehouseId: string;
+  importToWarehouseId: string;
 
   @ManyToOne(() => ProductEntity, (product) => product.imports)
   product: ProductEntity;

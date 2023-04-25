@@ -28,6 +28,6 @@ input UpdateProductInput {
 
 type Mutation {
   createProduct(CreateProductInput: CreateProductInput!): Product!
-  updateProduct(UpdateProductInput: UpdateProductInput!): Product
+  updateProduct(id: String!, UpdateProductInput: UpdateProductInput!): Product
   deleteProduct(id: String!): String
 }

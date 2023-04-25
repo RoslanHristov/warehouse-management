@@ -33,15 +33,14 @@ export class ExportService {
       productId,
     );
 
-    // Check if exportFromWarehouse exists
+    // Check if product warehouse exists
     const exportFromWarehouse: WarehouseEntity =
       await this.warehouseService.findWarehouseById(product.warehouseId);
 
-    // Check if exportToWarehouse exists
+    // Check if warehouse that we're exporting to exists
     const exportToWarehouse: WarehouseEntity =
       await this.warehouseService.findWarehouseById(exportToWarehouseId);
 
-    // Check if exportFromWarehouse and exportToWarehouse are different
     if (product.warehouseId === exportToWarehouseId) {
       throw new ConflictException(
         `Export from same warehouse "${exportFromWarehouse.name}" to warehouse "${exportToWarehouse.name}" is not allowed`,
@@ -55,6 +54,15 @@ export class ExportService {
     ) {
       throw new ConflictException(
         `Warehouse "${exportToWarehouse.name}" does not have enough space for this product`,
+      );
+    }
+
+    // Check if exported product is hazordous and warehouse will accept it
+    if (product.isHazardous !== exportToWarehouse.hazardous) {
+      throw new ConflictException(
+        `Export to warehouse "${exportToWarehouse.name}" accepts only ${
+          exportToWarehouse.hazardous ? 'hazardous' : 'non-hazardous'
+        } products`,
       );
     }
 

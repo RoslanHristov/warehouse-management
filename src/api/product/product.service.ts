@@ -69,8 +69,7 @@ export class ProductService {
    * @param updateProductInput
    * @returns
    */
-  public async updateProduct(updateProductInput) {
-    const id: string = updateProductInput.id;
+  public async updateProduct(id, updateProductInput) {
     const { warehouseId, productSize, name } = updateProductInput;
     try {
       const currentProduct: ProductEntity = await this.findProductById(id);

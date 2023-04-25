@@ -20,9 +20,10 @@ export class ProductResolver {
 
   @Mutation('updateProduct')
   public async updateProduct(
+    @Args('id') id: string,
     @Args('UpdateProductInput') updateProductInput: UpdateProductInput,
   ) {
-    return this.productService.updateProduct(updateProductInput);
+    return this.productService.updateProduct(id, updateProductInput);
   }
 
   @Query('findAllProducts')

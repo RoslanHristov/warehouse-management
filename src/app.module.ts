@@ -9,6 +9,7 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './libs/database.module';
 import { WarehouseModule } from './api/warehouse/warehouse.module';
 import { ProductModule } from './api/product/product.module';
+import { ImportModule } from './api/import/import.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ProductModule } from './api/product/product.module';
     // TypeOrmModule.forFeature([]),
     WarehouseModule,
     ProductModule,
+    ImportModule,
     ExportModule,
     DatabaseModule,
   ],

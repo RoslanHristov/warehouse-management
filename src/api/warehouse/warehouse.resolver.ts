@@ -15,9 +15,13 @@ export class WarehouseResolver {
 
   @Mutation('updateWarehouse')
   public async updateWarehouse(
+    @Args('id') id: string,
     @Args('UpdateWarehouseInput') updateWarehouseInput: UpdateWarehouseInput,
   ) {
-    return await this.warehouseService.updateWarehouse(updateWarehouseInput);
+    return await this.warehouseService.updateWarehouse(
+      id,
+      updateWarehouseInput,
+    );
   }
 
   @Mutation('deleteWarehouse')

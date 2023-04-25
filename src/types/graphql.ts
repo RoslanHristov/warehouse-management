@@ -11,7 +11,6 @@ export class CreateExportInput {
     amount: number;
     productId: string;
     exportDate: string;
-    exportFromWarehouseId: string;
     exportToWarehouseId: string;
 }
 
@@ -19,8 +18,21 @@ export class UpdateExportInput {
     amount?: Nullable<number>;
     productId?: Nullable<string>;
     exportDate?: Nullable<string>;
-    exportFromWarehouseId?: Nullable<string>;
     exportToWarehouseId?: Nullable<string>;
+}
+
+export class CreateImportInput {
+    amount: number;
+    productId: string;
+    importDate: string;
+    importToWarehouseId: string;
+}
+
+export class UpdateImportInput {
+    amount?: Nullable<number>;
+    productId?: Nullable<string>;
+    importDate?: Nullable<string>;
+    importToWarehouseId?: Nullable<string>;
 }
 
 export class CreateProductInput {
@@ -55,7 +67,6 @@ export class Export {
     amount: number;
     productId: string;
     exportDate: string;
-    exportFromWarehouseId: string;
     exportToWarehouseId: string;
     createdAt: string;
 }
@@ -64,6 +75,10 @@ export abstract class IQuery {
     abstract getExports(): Export[] | Promise<Export[]>;
 
     abstract getExport(id: string): Export | Promise<Export>;
+
+    abstract getImports(): Import[] | Promise<Import[]>;
+
+    abstract getImport(id: string): Import | Promise<Import>;
 
     abstract findAllProducts(): Nullable<Product>[] | Promise<Nullable<Product>[]>;
 
@@ -85,17 +100,32 @@ export abstract class IMutation {
 
     abstract deleteExport(id: string): boolean | Promise<boolean>;
 
+    abstract createImport(CreateImportInput: CreateImportInput): Import | Promise<Import>;
+
+    abstract updateImport(id: string, UpdateImportInput: UpdateImportInput): Import | Promise<Import>;
+
+    abstract deleteImport(id: string): boolean | Promise<boolean>;
+
     abstract createProduct(CreateProductInput: CreateProductInput): Product | Promise<Product>;
 
-    abstract updateProduct(UpdateProductInput: UpdateProductInput): Nullable<Product> | Promise<Nullable<Product>>;
+    abstract updateProduct(id: string, UpdateProductInput: UpdateProductInput): Nullable<Product> | Promise<Nullable<Product>>;
 
     abstract deleteProduct(id: string): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createWarehouse(CreateWarehouseInput: CreateWarehouseInput): Warehouse | Promise<Warehouse>;
 
-    abstract updateWarehouse(UpdateWarehouseInput: UpdateWarehouseInput): Warehouse | Promise<Warehouse>;
+    abstract updateWarehouse(id: string, UpdateWarehouseInput: UpdateWarehouseInput): Warehouse | Promise<Warehouse>;
 
     abstract deleteWarehouse(id: string): Nullable<string> | Promise<Nullable<string>>;
+}
+
+export class Import {
+    id: string;
+    amount: number;
+    productId: string;
+    importDate: string;
+    importToWarehouseId: string;
+    createdAt: string;
 }
 
 export class Product {

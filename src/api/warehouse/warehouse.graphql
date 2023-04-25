@@ -32,6 +32,9 @@ type Query {
 
 type Mutation {
   createWarehouse(CreateWarehouseInput: CreateWarehouseInput!): Warehouse!
-  updateWarehouse(UpdateWarehouseInput: UpdateWarehouseInput!): Warehouse!
+  updateWarehouse(
+    id: String!
+    UpdateWarehouseInput: UpdateWarehouseInput!
+  ): Warehouse!
   deleteWarehouse(id: String!): String
 }
